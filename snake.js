@@ -1,4 +1,5 @@
 import { drawPlayer, playerMovement } from "./snakeMovement.js";
+import { drawSnacks } from "./snacks.js";
 
 //let bgImg = document.getElementById("backgroundImage");
 
@@ -72,7 +73,7 @@ function initGame(gameWidth, gameHeight) {
             x: canvas.width / 2 - 25,
             y: canvas.height / 2 - 25,
             width: 20,
-            height: 10,
+            height: 20,
             speed: 300,
             angle: 0, 
             keys: {
@@ -84,8 +85,12 @@ function initGame(gameWidth, gameHeight) {
             },
         },
         
-        enemies: [],
-        enemySpawnTimer: 1,
+        snack: {
+            x: (Math.random() * (canvas.width - 100)),
+            y: (Math.random() * (canvas.height - 100)),
+            width: 15,
+            height: 15,
+        },
 
 
         points: 0,
@@ -99,15 +104,10 @@ function initGame(gameWidth, gameHeight) {
         deltaTime: 0,
         levelSpeed: 1,
 
-        gameWidth,
-        gameHeight,
     }
 }
 
-
-let levelSpeed = 1;
-
-function tick(ctx, game, levelSpeed) {
+function tick(ctx, game) {
   
   
   //function tick(game)  
@@ -115,27 +115,15 @@ function tick(ctx, game, levelSpeed) {
     game.deltaTime = (now - game.lastTime) / 1000;
     game.lastTime = now;
 
-   
-  
-
-
-
     //ctx.drawImage(bgImg, 0, 0, gameWidth, gameHeight);
 
 
-   // Laddar in spelaren
+    ctx.clearRect(0, 0, game.gameWidth, game.gameHeight);
+
     drawPlayer(ctx, game.player);
     playerMovement(game);
 
-
-
-    /*
-    // Laddar in fiender
-    drawEnemies(ctx, game);
-    updateEnemies(game);
-    tickEnemySpawning(game);
-    */
-
+    drawSnacks(ctx, game.snack);
 
     requestAnimationFrame(() => tick(ctx, game));
 
